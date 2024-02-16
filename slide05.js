@@ -52,6 +52,9 @@ function arrToStr(arr) {
 let contoh = ["apple", "banana", "cherry", "date"];
 console.log(arrToStr(contoh));
 
+// No. 3
+
+
 // No. 4
 function jumlahArr(arr1, arr2) {
     let arr = [];
@@ -64,17 +67,19 @@ function jumlahArr(arr1, arr2) {
     for (let i = 0; i < panjang; i++) {
         if (arr1[i] && arr2[i]) {
             arr[i] = arr1[i] + arr2[i];
-        }else if (arr1[i]) {
+        }else if (arr1[i] && arr1[i] !== 0) {
             arr[i] = arr1[i];
-        }else if(arr2[i]) {
+        }else if(arr2[i] && arr2[i] !== 0) {
             arr[i] = arr2[i];
+        }else {
+            arr[i] = arr1[i];
         }
     }
     return arr;
 }
 
-let arr1 = [1, 2, 3, 5, 9];
-let arr2 = [3, 2, 1, 5, 6, 7, 9];
+let arr1 = [1, 2, 3, 5, 0, 0];
+let arr2 = [3, 2, 1, 5, 0, 1];
 console.log(jumlahArr(arr1, arr2));
 
 // No. 5
@@ -96,3 +101,13 @@ function  newElement(arr, number = 0) {
 let tes = [1, 2, 3, 4];
 console.log(newElement(tes, 4));
 console.log(newElement(tes, 7));
+
+// yang singkat
+
+function newElements(arr, number = 0) {
+    return arr.includes(number) ? [...arr] : [...arr, number];
+}
+
+let test = [1, 2, 3, 4];
+console.log(newElements(test, 4));
+console.log(newElements(test, 7));
