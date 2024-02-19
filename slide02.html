@@ -1,0 +1,112 @@
+// No. 1
+<script>
+    // INPUT
+    const celcius = prompt("Masukkan temperatur dalam Celcius:");
+
+    // PROCESS
+    const farenheit = celcius*9/5 + 32;
+
+    //OUTPUT
+    alert(`Temperatur dalam Farenheit: ${farenheit}`);
+</script>
+
+// No. 2
+<script>
+    // INPUT
+    const angka = prompt("Masukkan angka:");
+    let simpan = "";
+
+    // PROCESS
+        if (angka%2 === 0) {
+            simpan = `Angka ${angka} genap`;
+        } else {
+            simpan = `Angka ${angka} ganjil`;
+        }
+
+    //OUTPUT
+    alert(simpan);
+</script>
+
+// No. 3
+<script>
+    // INPUT
+    const angka = prompt("Masukkan angka:");
+    let simpan = `Angka ${angka} bilangan prima`;
+
+    // PROCESS
+    if (angka <= 1) {
+        simpan =`Angka ${angka} bukan bilangan prima`;
+    } else if (angka === 2) {
+        simpan =`Angka ${angka} bilangan prima`;
+    } else if (angka % 2 === 0) {
+        simpan =`Angka ${angka} bukan bilangan prima`;
+    }
+    for (let i = 3; i <= Math.sqrt(angka); i += 2) {
+        if (angka % i === 0) {
+            simpan =`Angka ${angka} bukan bilangan prima`;
+            break;
+        }
+    }
+
+    //OUTPUT
+    alert(simpan);
+</script>
+
+// No. 4
+<script>
+    // INPUT
+    const angka = prompt("Masukkan angka:");
+    let total = 0;
+
+    // PROCESS
+    for (let i = 0; i <= angka; i++) {
+         total = total + i;
+    }
+
+    //OUTPUT
+    alert(`Penjumlahan ${angka} adalah ${total}`);
+</script>
+
+// No. 5
+<script>
+    // INPUT
+    const angka = prompt("Masukkan angka:");
+    let faktorial = 1;
+
+    // PROCESS
+    if (angka < 0) {
+        faktorial =`Angka ${angka} tidak memiliki faktorial`;
+    } else if (angka === 0) {
+        simpan =`Angka ${angka} berfaktorial 1`;
+    } else {
+        for (let i = 1; i <= angka; i ++) {
+            faktorial = faktorial*i
+        }
+    }
+    //OUTPUT
+    alert(`Faktorial ${angka} adalah adalah ${faktorial}`);
+</script>
+
+// No. 6
+<script>
+    // INPUT
+    const angka = prompt("Masukkan angka:");
+    let a = 0;
+    let b = 1;
+
+    // PROCESS
+    if (angka === 0) {
+        let output = `Deret Fibonacci ke-${angka} adalah ${angka}`;
+    }else if (angka === 1) {
+        output = `Deret Fibonacci ke-${angka} adalah ${angka}`;
+    }else {
+        for (let i = 2; i <= angka; i++) {
+            let jumlah = b;
+            b = a + b;
+            a = jumlah;
+        }
+        output = `Deret Fibonacci ke-${angka} adalah ${b}`;
+    }
+    //OUTPUT
+    alert(output);
+</script>
