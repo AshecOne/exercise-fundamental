@@ -1,0 +1,116 @@
+<script>
+    let dataBase = [
+        {name: "Sepatu", stok: 20, harga: 85000},
+        {name: "Kaos", stok: 10, harga: 55000},
+        {name: "Jaket", stok: 6, harga: 105000},
+    ];
+
+    function lihatData() {
+        let result = dataBase.map((item, index) => `${index + 1}. ${item.name}, stok ${item.stok}, harga satuan Rp. ${item.harga.toLocaleString('id-ID', {minimumFractionDigits: 2})}`).join('\n');
+        alert(`Daftar barang saat ini:\n${result}`);
+    }
+
+    function tambahData() {
+        let produk = prompt("Masukkan nama produk:");
+        if (!produk) {
+            alert("Pilihan tidak valid");
+            return tambahData(); 
+        }
+
+        let stokBarang = parseInt(prompt("Berapa stok produk"), 10);
+        if (isNaN(stokBarang)) {
+            alert("Pilihan tidak valid");
+            return tambahData();
+        }
+
+        let hargaBarang = parseInt(prompt("Masukkan harga satuan produk"), 10);
+        if (isNaN(hargaBarang)) {
+            alert("Pilihan tidak valid");
+            return tambahData();
+        }
+
+        dataBase.push({name: produk, stok: stokBarang, harga: hargaBarang});
+        alert("Data berhasil ditambahkan");
+        lihatData();
+    }
+
+    function hapusData() {
+        let result = dataBase.map((item, index) => `${index + 1}. ${item.name}`).join('\n');
+        let pilih = parseInt(prompt(`Pilih data yang ingin dihapus:\n${result}`), 10) - 1;
+        if (pilih >= 0 && pilih < dataBase.length) {
+            dataBase.splice(pilih, 1);
+            alert("Data berhasil dihapus");
+            lihatData();
+        } else {
+            alert("Pilihan tidak valid");
+            hapusData();
+        }
+    }
+
+    function updateData() {
+        let result = dataBase.map((item, index) => `${index + 1}. ${item.name}`).join('\n');
+        let pilih = parseInt(prompt(`Pilih data yang ingin diupdate:\n${result}`), 10) - 1;
+        if (pilih >= 0 && pilih < dataBase.length) {
+            let update = prompt(`A. Ubah nama produk\nB. Update stok\nC. Update harga`);
+            let input = prompt(`Silakan merubah data`);
+
+            if (!input) {
+                alert("Pilihan tidak valid");
+                return updateData();
+            }
+
+            if (update.toUpperCase() === "A") {
+                dataBase[pilih].name = input;
+            } else if (update.toUpperCase() === "B") {
+                let stok = parseInt(input, 10);
+                if (isNaN(stok)) {
+                    alert("Pilihan tidak valid");
+                    return updateData();
+                }
+                dataBase[pilih].stok = stok;
+            } else if (update.toUpperCase() === "C") {
+                let harga = parseInt(input, 10);
+                if (isNaN(harga)) {
+                    alert("Pilihan tidak valid");
+                    return updateData();
+                }
+                dataBase[pilih].harga = harga;
+            }
+            alert("Data berhasil diupdate");
+            lihatData();
+        } else {
+            alert("Pilihan tidak valid");
+            updateData();
+        }
+    }
+
+    function manageDatabase() {
+        let operasi = true;
+        while (operasi) {
+            const manageData = prompt(`Mulai manage data:\nA. Lihat data\nB. Tambah data\nC. Hapus data\nD. Update data\nE. Exit`);
+            switch (manageData.toUpperCase()) {
+                case "A":
+                    lihatData();
+                    break;
+                case "B":
+                    tambahData();
+                    break;
+                case "C":
+                    hapusData();
+                    break;
+                case "D":
+                    updateData();
+                    break;
+                case "E":
+                    operasi = false;
+                    alert("Terima kasih telah menggunakan database ini.");
+                    break;
+                default:
+                    alert("Pilihan tidak valid");
+                    break;
+            }
+        }
+    }
+
+    manageDatabase();
+</script>
