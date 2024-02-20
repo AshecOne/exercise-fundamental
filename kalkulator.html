@@ -1,0 +1,48 @@
+<script>
+    while (true) { // Loop utama untuk seluruh kalkulator
+        let operasiValid = false;
+        let operasi;
+
+        // Loop validasi input operasi
+        while (!operasiValid) {
+            operasi = prompt("A. Penjumlahan\nB. Pengurangan\nC. Perkalian\nD. Pembagian\nE. Keluar");
+            if (operasi.toUpperCase() === "A" || operasi.toUpperCase() === "B" || operasi.toUpperCase() === "C" || operasi.toUpperCase() === "D" || operasi.toUpperCase() === "E") {
+                operasiValid = true; // Input valid, keluar dari loop validasi
+            } else {
+                alert("Input tidak valid. Silakan masukkan A, B, C, D, atau E.");
+            }
+        }
+
+        if (operasi.toUpperCase() === "E") { // Jika pengguna memilih untuk keluar
+            alert("Terima kasih telah menggunakan kalkulator ini.");
+            break; // Keluar dari loop utama
+        }
+
+        let angka1 = Number(prompt("Masukkan angka pertama:"));
+        let angka2 = Number(prompt("Masukkan angka kedua:"));
+        let hasil;
+        let output = "";
+
+        // Proses dan output berdasarkan operasi
+        switch (operasi.toUpperCase()) {
+            case "A":
+                hasil = angka1 + angka2;
+                output = `Penjumlahan antara ${angka1} dan ${angka2} = ${hasil}`;
+                break;
+            case "B":
+                hasil = angka1 - angka2;
+                output = `Pengurangan antara ${angka1} dan ${angka2} = ${hasil}`;
+                break;
+            case "C":
+                hasil = angka1 * angka2;
+                output = `Perkalian antara ${angka1} dan ${angka2} = ${hasil}`;
+                break;
+            case "D":
+                hasil = angka1 / angka2;
+                output = `Pembagian antara ${angka1} dan ${angka2} = ${hasil}`;
+                break;
+        }
+
+        alert(output); // Menampilkan hasil
+    }
+</script>
