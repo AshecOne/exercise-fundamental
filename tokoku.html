@@ -158,59 +158,82 @@
         userPanel(user) {
             alert(`Selamat datang ${user.name}! Anda sekarang berada di panel belanja.`);
             let totalBelanja = 0;
-            let belanjaLagi = true;
+            let keranjang = [];
 
-            while (belanjaLagi) {
-                let filteredProducts = this.products.filter(item => item.stock > 0);
-                let produkList = filteredProducts.map((item, index) => `${index + 1}. ${item.name} - Harga: ${item.formatHarga()}`).join('\n');
+            while (true) {
+                let produkList = this.products
+                    .map((item, index) => `${index + 1}. ${item.name} - Harga: ${item.formatHarga()} - Stok: ${item.stock}`)
+                    .join('\n');
                 let pilihanProdukIndex = parseInt(prompt(`Pilih produk yang ingin dibeli:\n${produkList}\n0. Selesai`), 10) - 1;
 
                 if (pilihanProdukIndex === -1) {
-                    belanjaLagi = false;
-                    continue;
+                    break;
                 }
 
-                if (pilihanProdukIndex >= 0 && pilihanProdukIndex < filteredProducts.length) {
-                    let produk = filteredProducts[pilihanProdukIndex];
-                    let jumlahBeli = parseInt(prompt(`Stock ${produk.name}: ${produk.stock}. Berapa banyak yang ingin dibeli?`), 10);
+                if (pilihanProdukIndex >= 0 && pilihanProdukIndex < this.products.length) {
+                    let produk = this.products[pilihanProdukIndex];
+                    if (produk.stock === 0) {
+                        alert("Stok barang sedang dalam keranjang.");
+                        continue;
+                    }
 
+                    let jumlahBeli = parseInt(prompt(`Stock ${produk.name}: ${produk.stock}. Berapa banyak yang ingin dibeli?`), 10);
                     if (jumlahBeli > 0 && jumlahBeli <= produk.stock) {
                         totalBelanja += jumlahBeli * produk.price;
-                        produk.updateStock(jumlahBeli);
-                        belanjaLagi = confirm("Ingin belanja lagi?");
+                        produk.stock -= jumlahBeli; // Kurangi stok langsung
+                        keranjang.push({ produk: produk, jumlah: jumlahBeli }); // Simpan ke keranjang
                     } else {
                         alert("Jumlah tidak valid atau melebihi stok.");
                     }
                 } else {
                     alert("Pilihan tidak valid.");
                 }
+
+                if (!confirm("Ingin belanja lagi?")) {
+                    break;
+                }
             }
 
             if (totalBelanja > 0) {
                 let formatTotalBelanja = new Product('', 0, totalBelanja).formatHarga();
                 alert(`Total belanjaan Anda adalah: ${formatTotalBelanja}`);
-                let pembayaran = null;
-                do {
-                    let input = prompt(`Total belanjaan Anda: ${formatTotalBelanja}. Masukkan jumlah uang:`);
-                    if (input === null) {
-                        alert("Pembayaran dibatalkan.");
-                        return; 
-                    }
-                    pembayaran = parseInt(input, 10);
-                    if (isNaN(pembayaran)) {
-                        alert("Mohon masukkan angka yang valid.");
-                        pembayaran = 0;
-                    } else if (pembayaran < totalBelanja) {
-                        alert("Uang tidak cukup. Silakan masukkan jumlah yang benar.");
-                    }
-                } while (pembayaran < totalBelanja);
 
-                let kembalian = pembayaran - totalBelanja;
-                alert(`Terima kasih telah berbelanja. Kembalian Anda: ${new Product('', 0, kembalian).formatHarga()}`);
+                if (confirm("Lanjutkan ke pembayaran?")) {
+                    // Proses pembayaran...
+                    let pembayaran = null;
+                    do {
+                        let input = prompt(`Total belanjaan Anda: ${formatTotalBelanja}. Masukkan jumlah uang:`);
+                        if (input === null) {
+                            alert("Pembayaran dibatalkan.");
+                            keranjang.forEach(item => {
+                                item.produk.stock += item.jumlah; // Kembalikan stok jika pembayaran dibatalkan
+                            });
+                            return; 
+                        }
+                        pembayaran = parseInt(input, 10);
+                        if (isNaN(pembayaran)) {
+                            alert("Mohon masukkan angka yang valid.");
+                        } else if (pembayaran < totalBelanja) {
+                            alert("Uang tidak cukup. Silakan masukkan jumlah yang benar.");
+                        }
+                    } while (isNaN(pembayaran) || pembayaran < totalBelanja);
+
+                    if (pembayaran >= totalBelanja) {
+                        let kembalian = pembayaran - totalBelanja;
+                        alert(`Terima kasih telah berbelanja. Kembalian Anda: ${new Product('', 0, kembalian).formatHarga()}`);
+                        // Produk sudah diupdate stoknya saat dimasukkan ke keranjang, tidak perlu update lagi di sini
+                    }
+                } else {
+                    alert("Pembelian dibatalkan.");
+                    keranjang.forEach(item => {
+                        item.produk.stock += item.jumlah; // Kembalikan stok jika pembelian dibatalkan
+                    });
+                }
             } else {
                 alert("Anda tidak melakukan pembelian.");
             }
         }
+
     }
 
     class App {
